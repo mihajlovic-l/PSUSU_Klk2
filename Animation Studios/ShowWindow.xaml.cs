@@ -37,7 +37,7 @@ namespace Animation_Studios
             RatingPanel.Children.Clear();
             for (int i = 1; i <= 10; i++)
             {
-                var rb = new RadioButton { Content = i.ToString(), Tag = i, GroupName = "Rating" };
+                var rb = new RadioButton { Content = i.ToString() + " ", Tag = i, GroupName = "Rating" };
                 RatingPanel.Children.Add(rb);
             }
 
