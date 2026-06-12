@@ -1,0 +1,69 @@
+﻿<Window x:Class="Animation_Studios.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Animation_Studios"
+        mc:Ignorable="d"
+        Title="Animation Studios" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="Studios" Grid.Column="0" Margin="5">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,5">
+                    <Button x:Name="StudioAdd" Width="32" Height="32" ToolTip="Add">
+                        <Image Source="/Icons/plus.png" />
+                    </Button>
+                    <Button x:Name="StudioInfo" Width="32" Height="32" ToolTip="Info">
+                        <Image Source="/Icons/info.png" />
+                    </Button>
+                    <Button x:Name="StudioEdit" Width="32" Height="32" ToolTip="Edit">
+                        <Image Source="/Icons/edit.png" />
+                    </Button>
+                    <Button x:Name="StudioDelete" Width="32" Height="32" ToolTip="Delete">
+                        <Image Source="/Icons/delete.png" />
+                    </Button>
+                </StackPanel>
+
+                <DataGrid x:Name="StudioGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Country" Binding="{Binding Country}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </GroupBox>
+
+        <GroupBox Header="Shows" Grid.Column="1" Margin="5">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,0,0,5">
+                    <Button x:Name="ShowAdd" Width="32" Height="32" ToolTip="Add">
+                        <Image Source="/Icons/plus.png" />
+                    </Button>
+                    <Button x:Name="ShowInfo" Width="32" Height="32" ToolTip="Info">
+                        <Image Source="/Icons/info.png" />
+                    </Button>
+                    <Button x:Name="ShowEdit" Width="32" Height="32" ToolTip="Edit">
+                        <Image Source="/Icons/edit.png" />
+                    </Button>
+                    <Button x:Name="ShowDelete" Width="32" Height="32" ToolTip="Delete">
+                        <Image Source="/Icons/delete.png" />
+                    </Button>
+                </StackPanel>
+
+                <DataGrid x:Name="ShowGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Genre" Binding="{Binding GenreDisplay}" />
+                        <DataGridTextColumn Header="# Episodes" Binding="{Binding NumberOfEpisodes}" />
+                        <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </GroupBox>
+    </Grid>
+</Window>

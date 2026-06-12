@@ -1,0 +1,12 @@
+<Window x:Class="Animation_Studios.DetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Details" Height="400" Width="400">
+    <ScrollViewer>
+    <StackPanel Margin="10">
+        <TextBlock x:Name="TitleBlock" FontWeight="Bold" FontSize="16" Margin="0,0,0,10" />
+        <ItemsControl x:Name="PropsList" />
+        <Button Content="Close" HorizontalAlignment="Right" Width="75" Margin="0,10,0,0" Click="Close_Click" />
+    </StackPanel>
+    </ScrollViewer>
+</Window>
