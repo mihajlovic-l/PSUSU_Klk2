@@ -57,7 +57,8 @@ namespace Animation_Studios
 
         private void StudioAdd_Click(object sender, RoutedEventArgs e)
         {
-            var w = new StudioWindow();
+            var existing = Data.Repository.Studios.Select(x => x.Name);
+            var w = new StudioWindow(existing);
             if (w.ShowDialog() == true)
             {
                 Data.Repository.AddStudio(w.Studio);
@@ -84,7 +85,8 @@ namespace Animation_Studios
                 NumberOfEmployees = s.NumberOfEmployees,
                 Shows = s.Shows
             };
-            var w = new StudioWindow(copy);
+            var existing = Data.Repository.Studios.Where(x => x.Id != s.Id).Select(x => x.Name);
+            var w = new StudioWindow(copy, existing);
             if (w.ShowDialog() == true)
             {
                 Data.Repository.UpdateStudio(w.Studio);
@@ -106,7 +108,8 @@ namespace Animation_Studios
         {
             var s = StudioGrid.SelectedItem as Models.Studio;
             if (s == null) { MessageBox.Show("Select a studio first."); return; }
-            var w = new ShowWindow();
+            var existing = s.Shows.Select(x => x.Name);
+            var w = new ShowWindow(existing);
             if (w.ShowDialog() == true)
             {
                 s.Shows.Add(w.Show);
@@ -128,7 +131,8 @@ namespace Animation_Studios
             var s = StudioGrid.SelectedItem as Models.Studio;
             var sh = ShowGrid.SelectedItem as Models.Show;
             if (s == null || sh == null) return;
-            var w = new ShowWindow(sh);
+            var existing = s.Shows.Where(x => x.Id != sh.Id).Select(x => x.Name);
+            var w = new ShowWindow(sh, existing);
             if (w.ShowDialog() == true)
             {
                 var idx = s.Shows.IndexOf(sh);

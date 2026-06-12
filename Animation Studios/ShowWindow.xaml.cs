@@ -9,15 +9,17 @@ namespace Animation_Studios
     public partial class ShowWindow : Window
     {
         public Show Show { get; private set; }
+        private System.Collections.Generic.IEnumerable<string> _existingNames;
 
-        public ShowWindow()
+        public ShowWindow(System.Collections.Generic.IEnumerable<string> existingNames = null)
         {
             InitializeComponent();
             OkButton.Click += OkButton_Click;
             Loaded += ShowWindow_Loaded;
+            _existingNames = existingNames ?? new string[0];
         }
 
-        public ShowWindow(Show s) : this()
+        public ShowWindow(Show s, System.Collections.Generic.IEnumerable<string> existingNames = null) : this(existingNames)
         {
             Show = s;
         }
@@ -68,14 +70,44 @@ namespace Animation_Studios
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
+            var errors = new System.Collections.Generic.List<string>();
+
+            var name = NameBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+                errors.Add("Name must not be empty.");
+            else if (_existingNames != null && System.Linq.Enumerable.Any(_existingNames, n => string.Equals(n, name, StringComparison.OrdinalIgnoreCase)))
+                errors.Add("Show name already exists.");
+
+            if (!StartedPicker.SelectedDate.HasValue)
+                errors.Add("Started date must be selected.");
+
+            var director = DirectorBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(director))
+                errors.Add("Director must not be empty.");
+
+            var epsText = EpisodesBox.Text?.Trim();
+            int eps = 0;
+            if (string.IsNullOrWhiteSpace(epsText))
+                errors.Add("Number of episodes must not be empty.");
+            else if (!int.TryParse(epsText, out eps))
+                errors.Add("Number of episodes must be a valid integer.");
+
+            if (StatusCombo.SelectedItem == null)
+                errors.Add("Status must be selected.");
+
+            if (errors.Count > 0)
+            {
+                MessageBox.Show(string.Join("\n", errors), "Validation error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (Show == null) Show = new Show();
 
-            Show.Name = NameBox.Text.Trim();
+            Show.Name = name;
             Show.Started = StartedPicker.SelectedDate ?? DateTime.MinValue;
             Show.Ended = EndedPicker.SelectedDate ?? DateTime.MinValue;
-            Show.Director = DirectorBox.Text.Trim();
-            int.TryParse(EpisodesBox.Text, out int ep);
-            Show.NumberOfEpisodes = ep;
+            Show.Director = director;
+            Show.NumberOfEpisodes = eps;
             Show.Movie = MovieCheck.IsChecked == true;
             if (StatusCombo.SelectedItem != null)
                 Show.Status = (ShowStatus)Enum.Parse(typeof(ShowStatus), StatusCombo.SelectedItem.ToString());
@@ -92,14 +124,16 @@ namespace Animation_Studios
             Show.Genre = g;
 
             // rating
+            int rating = 0;
             foreach (RadioButton rb in RatingPanel.Children)
             {
                 if (rb.IsChecked == true)
                 {
-                    Show.Rating = (int)rb.Tag;
+                    rating = (int)rb.Tag;
                     break;
                 }
             }
+            Show.Rating = rating;
 
             DialogResult = true;
             Close();

@@ -36,7 +36,7 @@ namespace Animation_Studios
                     {
                         if (pi.Name == "Ended")
                         {
-                            display = "Currently Airing";
+                            display = "Currently airing";
                         }
                         else
                         {
