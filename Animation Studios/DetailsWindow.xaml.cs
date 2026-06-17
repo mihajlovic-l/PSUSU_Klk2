@@ -20,8 +20,9 @@ namespace Animation_Studios
             foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 var val = pi.GetValue(obj);
+                var tb = new TextBlock();
 
-                if (pi.Name == "Id" || pi.Name == "Shows" || pi.Name == "GenreDisplay")
+                if (pi.Name == "Id" || pi.Name == "Shows" || pi.Name == "GenreDisplay" || pi.Name == "RatingDisplay")
                 {
                     continue;
                 }
@@ -44,36 +45,38 @@ namespace Animation_Studios
                         }
                     }
 
-                    var tb = new TextBlock { Text = pi.Name + ": " + display };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = pi.Name + ": " + display };
                 }
                 else if (pi.Name == "NumberOfEmployees")
                 {
-                    var tb = new TextBlock { Text = "Number of employees: " + (val?.ToString() ?? "") };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = "Number of employees: " + (val?.ToString() ?? "") };
                 }
                 else if (pi.Name == "NumberOfEpisodes")
                 {
-                    var tb = new TextBlock { Text = "Number of episodes: " + (val?.ToString() ?? "") };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = "Number of episodes: " + (val?.ToString() ?? "") };
+                }
+                else if (pi.Name == "Rating")
+                {
+                    // Show "No rating" when Rating == 0
+                    if (val is int r && r == 0)
+                        tb = new TextBlock { Text = "Rating: No rating" };
+                    else
+                        tb = new TextBlock { Text = "Rating: " + (val?.ToString() ?? "") };
                 }
                 else if (val?.ToString() == "PlanToWatch")
                 {
-                    var tb = new TextBlock { Text = pi.Name + ": Plan to watch" };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = pi.Name + ": Plan to watch" };
                 }
                 else if (val?.ToString() == "OnHold")
                 {
-                    var tb = new TextBlock { Text = pi.Name + ": On hold" };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = pi.Name + ": On hold" };
                 }
                 else
                 {
-                    var tb = new TextBlock { Text = pi.Name + ": " + (val?.ToString() ?? "") };
-                    PropsList.Items.Add(tb);
+                    tb = new TextBlock { Text = pi.Name + ": " + (val?.ToString() ?? "") };
                 }
 
-
+                PropsList.Items.Add(tb);
             }
         }
 

@@ -60,7 +60,7 @@
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                         <DataGridTextColumn Header="Genre" Binding="{Binding GenreDisplay}" />
                         <DataGridTextColumn Header="# Episodes" Binding="{Binding NumberOfEpisodes}" />
-                        <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
+                        <DataGridTextColumn Header="Rating" Binding="{Binding RatingDisplay}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>

@@ -27,5 +27,8 @@ namespace Animation_Studios.Models
 
         [XmlIgnore]
         public string GenreDisplay => Genre.ToString();
+
+        [XmlIgnore]
+        public string RatingDisplay => Rating == 0 ? "No rating" : Rating.ToString();
     }
 }
