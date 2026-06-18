@@ -15,6 +15,9 @@ namespace Animation_Studios
             if (obj == null) return;
 
             var type = obj.GetType();
+            if (type.Namespace == "System.Data.Entity.DynamicProxies")
+                type = type.BaseType;
+
             TitleBlock.Text = type.Name + " details";
 
             foreach (PropertyInfo pi in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
@@ -22,7 +25,7 @@ namespace Animation_Studios
                 var val = pi.GetValue(obj);
                 var tb = new TextBlock();
 
-                if (pi.Name == "Id" || pi.Name == "Shows" || pi.Name == "GenreDisplay" || pi.Name == "RatingDisplay")
+                if (pi.Name == "Id" || pi.Name == "Shows" || pi.Name == "GenreDisplay" || pi.Name == "RatingDisplay" || pi.Name == "StudioId")
                 {
                     continue;
                 }
@@ -57,7 +60,6 @@ namespace Animation_Studios
                 }
                 else if (pi.Name == "Rating")
                 {
-                    // Show "No rating" when Rating == 0
                     if (val is int r && r == 0)
                         tb = new TextBlock { Text = "Rating: No rating" };
                     else
@@ -70,6 +72,18 @@ namespace Animation_Studios
                 else if (val?.ToString() == "OnHold")
                 {
                     tb = new TextBlock { Text = pi.Name + ": On hold" };
+                }
+                else if (pi.Name == "Studio")
+                {
+                    var studio = val as Studio;
+                    tb = new TextBlock { Text = "Studio: " + (studio?.Name ?? "") };
+                }
+                else if (pi.Name == "Headquarters")
+                {
+                    if (val?.ToString() == "")
+                        tb = new TextBlock { Text = "Headquarters: No headquarters" };
+                    else
+                        tb = new TextBlock { Text = "Headquarters: " + (val?.ToString() ?? "") };
                 }
                 else
                 {

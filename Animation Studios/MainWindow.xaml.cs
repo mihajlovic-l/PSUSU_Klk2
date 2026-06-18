@@ -29,6 +29,8 @@ namespace Animation_Studios
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             StudioGrid.ItemsSource = Data.Repository.Studios;
+            // start loading data from the database in background
+            Data.Repository.StartBackgroundLoad();
             StudioGrid.SelectionChanged += StudioGrid_SelectionChanged;
 
             StudioAdd.Click += StudioAdd_Click;
@@ -112,11 +114,11 @@ namespace Animation_Studios
             var w = new ShowWindow(existing);
             if (w.ShowDialog() == true)
             {
-                s.Shows.Add(w.Show);
-                Data.Repository.Save();
-                // refresh
+                Data.Repository.AddShow(s.Id, w.Show);
+                // refresh: find the studio in repository and rebind its shows
+                var updated = Data.Repository.Studios.FirstOrDefault(x => x.Id == s.Id);
                 ShowGrid.ItemsSource = null;
-                ShowGrid.ItemsSource = s.Shows;
+                ShowGrid.ItemsSource = updated?.Shows;
             }
         }
 
@@ -135,11 +137,10 @@ namespace Animation_Studios
             var w = new ShowWindow(sh, existing);
             if (w.ShowDialog() == true)
             {
-                var idx = s.Shows.IndexOf(sh);
-                s.Shows[idx] = w.Show;
-                Data.Repository.Save();
+                Data.Repository.UpdateShow(w.Show);
+                var updated = Data.Repository.Studios.FirstOrDefault(x => x.Id == s.Id);
                 ShowGrid.ItemsSource = null;
-                ShowGrid.ItemsSource = s.Shows;
+                ShowGrid.ItemsSource = updated?.Shows;
             }
         }
 
@@ -151,10 +152,10 @@ namespace Animation_Studios
             var res = MessageBox.Show($"Delete show {sh.Name}?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (res == MessageBoxResult.Yes)
             {
-                s.Shows.Remove(sh);
-                Data.Repository.Save();
+                Data.Repository.DeleteShow(sh.Id);
+                var updated = Data.Repository.Studios.FirstOrDefault(x => x.Id == s.Id);
                 ShowGrid.ItemsSource = null;
-                ShowGrid.ItemsSource = s.Shows;
+                ShowGrid.ItemsSource = updated?.Shows;
             }
         }
     }

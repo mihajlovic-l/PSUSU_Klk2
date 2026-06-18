@@ -105,7 +105,7 @@ namespace Animation_Studios
 
             Show.Name = name;
             Show.Started = StartedPicker.SelectedDate ?? DateTime.MinValue;
-            Show.Ended = EndedPicker.SelectedDate ?? DateTime.MinValue;
+            Show.Ended = EndedPicker.SelectedDate;
             Show.Director = director;
             Show.NumberOfEpisodes = eps;
             Show.Movie = MovieCheck.IsChecked == true;
